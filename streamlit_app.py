@@ -38,6 +38,15 @@ def load_ride_data():
 # Header
 st.title("🎢 Walt Disney World Wait Time Analytics")
 st.caption("Hourly data ingested via Apache Airflow → Snowflake → dbt")
+st.info("""
+**What makes this project notable:** The dashboard visuals are intentionally simple — that's not the point. 
+The point is what's happening behind them. This pipeline automatically pulls live ride wait time data from 
+Walt Disney World every hour without any manual intervention. Raw JSON from the API lands in Snowflake, 
+dbt transforms it into clean analytics-ready tables, and Airflow makes sure it all runs on schedule whether 
+the laptop is open or not. The architecture mirrors what production data engineering teams at major theme 
+park operators actually build — the same tools, the same patterns, the same separation of concerns between 
+ingestion, transformation, and presentation.
+""")
 
 # Load data
 park_df = load_park_data()
