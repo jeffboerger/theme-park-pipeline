@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: raw
+    database: THEME_PARK_DB
+    schema: RAW
+    tables:
+      - name: raw_wait_times
+      - name: raw_forecast
