@@ -1,29 +1,8 @@
-import snowflake.connector
-from dotenv import load_dotenv
-import os
+from etl.extract import fetch_wait_times
+from etl.load import load_wait_times
 
-load_dotenv()
+wait_rows, forecast_rows = fetch_wait_times()
+print(f"wait_rows: {len(wait_rows)}")
+print(f"forecast_rows: {len(forecast_rows)}")
+load_wait_times(wait_rows, forecast_rows)
 
-conn = snowflake.connector.connect(
-    account=os.getenv("SNOWFLAKE_ACCOUNT"),
-    user=os.getenv("SNOWFLAKE_USER"),
-    password=os.getenv("SNOWFLAKE_PASSWORD"),
-    warehouse="THEME_PARK_WH",
-    database="THEME_PARK_DB",
-    schema="RAW"
-)
-
-cursor = conn.cursor()
-
-cursor.execute("SELECT COUNT(*) FROM raw_wait_times")
-print(f"Wait times rows: {cursor.fetchone()[0]}")
-
-cursor.execute("SELECT COUNT(*) FROM raw_forecast")
-print(f"Forecast rows: {cursor.fetchone()[0]}")
-
-cursor.execute("SELECT ride_name, status, standby_wait, collected_at FROM raw_wait_times LIMIT 5")
-for row in cursor.fetchall():
-    print(row)
-
-cursor.close()
-conn.close()
