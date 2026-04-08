@@ -1,5 +1,6 @@
 from airflow import DAG
 from airflow.providers.standard.operators.python import PythonOperator
+from airflow.providers.standard.operators.bash import BashOperator
 from datetime import datetime, timezone
 import sys
 import os
@@ -31,3 +32,10 @@ with DAG(
         task_id="ingest_wait_times",
         python_callable=run_pipeline
     )
+
+    dbt_task = BashOperator(
+        task_id="run_dbt_models",
+        bash_command="cd /Users/jeffboerger/Dev/theme-park-pipeline/theme_park_dbt && /Users/jeffboerger/Dev/theme-park-pipeline/venv/bin/dbt run"
+    )
+
+    ingest_task >> dbt_task
