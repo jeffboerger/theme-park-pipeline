@@ -1,0 +1,63 @@
+RIDE_ID,RIDE_NAME,PARK_NAME,TOTAL_SNAPSHOTS,AVG_WAIT_MINUTES,MAX_WAIT_MINUTES,MIN_WAIT_MINUTES,VERY_LONG_WAIT_COUNT
+34c4916b-989b-4ff1-a7e3-a6a846a3484f,Millennium Falcon: Smugglers Run,Hollywood Studios,9,106.666667,155,45,8
+399aa0a1-98e2-4d2b-b297-2b451e9665e1,Slinky Dog Dash,Hollywood Studios,9,106.666667,130,75,9
+e3549451-b284-453d-9c31-e3b1207abd79,Guardians of the Galaxy: Cosmic Rewind,EPCOT,9,104.444444,110,95,9
+37ae57c5-feaf-4e47-8f27-4b385be200f0,Test Track,EPCOT,6,94.166667,105,70,6
+24cf863c-b6ba-4826-a056-0b698989cbf7,Avatar Flight of Passage,Animal Kingdom,9,86.666667,115,65,9
+1a2e70d9-50d5-4140-b69e-799e950f7d18,Star Wars: Rise of the Resistance,Hollywood Studios,9,86.111111,105,60,8
+5a43d1a7-ad53-4d25-abfe-25625f0da304,TRON Lightcycle / Run,Magic Kingdom,9,84.444444,105,75,9
+6f6998e8-a629-412c-b964-2cb06af8e26b,The Twilight Zone™ Tower of Terror,Hollywood Studios,8,73.75,85,65,8
+1e735ffb-4868-47f1-b2cd-2ac1156cd5f0,Remy's Ratatouille Adventure,EPCOT,9,73.333333,95,55,6
+81b15dfd-cf6a-466f-be59-3dd65d2a2807,Soarin' Around the World,EPCOT,9,67.222222,110,45,6
+9d4d5229-7142-44b6-b4fb-528920969a2c,Seven Dwarfs Mine Train,Magic Kingdom,9,67.222222,75,60,8
+8d7ccdb1-a22b-4e26-8dc8-65b1938ed5f0,Frozen Ever After,EPCOT,8,66.25,70,55,7
+d58d9262-ec95-4161-80a0-07ca43b2f5f3,Kali River Rapids,Animal Kingdom,8,66.25,110,45,2
+7a5af3b7-9bc1-4962-92d0-3ea9c9ce35f0,Na'vi River Journey,Animal Kingdom,9,65.0,80,40,5
+6e118e37-5002-408d-9d88-0b5d9cdb5d14,Mickey & Minnie's Runaway Railway,Hollywood Studios,9,63.888889,75,50,5
+32e01181-9a5f-4936-8a77-0dace1de836c,Kilimanjaro Safaris,Animal Kingdom,8,59.375,80,25,5
+796b0a25-c51e-456e-9bb8-50a324e301b3,Jungle Cruise,Magic Kingdom,9,58.333333,70,45,3
+86a41273-5f15-4b54-93b6-829f140e5161,Peter Pan's Flight,Magic Kingdom,9,55.0,70,45,1
+6f6998e8-a629-412c-b964-2cb06af8e26b,The Twilight Zone Tower of Terror™,Hollywood Studios,1,55.0,55,55,0
+20b5daa8-e1ea-436f-830c-2d7d18d929b5,Toy Story Mania!,Hollywood Studios,9,52.222222,65,40,2
+73cb9445-0695-47a3-87ce-d08ae36b5f3c,Tiana's Bayou Adventure,Magic Kingdom,9,52.222222,75,40,1
+b2260923-9315-40fd-9c6b-44dd811dbe64,Space Mountain,Magic Kingdom,9,50.555556,60,45,0
+0d94ad60-72f0-4551-83a6-ebaecdd89737,The Many Adventures of Winnie the Pooh,Magic Kingdom,7,47.142857,50,35,0
+d56506e2-6ad3-443a-8065-fea37987248d,Alien Swirling Saucers,Hollywood Studios,9,42.222222,60,25,0
+64a6915f-a835-4226-ba5c-8389fc4cade3,Expedition Everest - Legend of the Forbidden Mountain,Animal Kingdom,7,42.142857,50,25,0
+2551a77d-023f-4ab1-9a19-8afec0190f39,Haunted Mansion,Magic Kingdom,9,40.555556,45,35,0
+352feb94-e52e-45eb-9c92-e4b44c6b1a9d,Pirates of the Caribbean,Magic Kingdom,6,38.333333,50,25,0
+96455de6-f4f1-403c-9391-bf8396979149,The Magic Carpets of Aladdin,Magic Kingdom,9,36.666667,40,25,0
+72c7343a-f7fb-4f66-95df-c91016de7338,Buzz Lightyear's Space Ranger Spin,Magic Kingdom,9,36.111111,60,20,0
+890fa430-89c0-4a3f-96c9-11597888005e,Dumbo the Flying Elephant,Magic Kingdom,9,36.111111,50,15,0
+f5aad2d4-a419-4384-bd9a-42f86385c750,"""it's a small world""",Magic Kingdom,9,32.222222,40,20,0
+480fde8f-fe58-4bfb-b3ab-052a39d4db7c,Spaceship Earth,EPCOT,9,31.111111,40,15,0
+924a3b2c-6b4b-49e5-99d3-e9dc3f2e8a48,The Barnstormer,Magic Kingdom,7,30.714286,45,20,0
+1b15c77b-0311-4171-8e59-7f38e6d60754,Zootopia: Better Zoogether! - NEW!,Animal Kingdom,9,30.0,45,10,0
+f163ddcd-43e1-488d-8276-2381c1db0a39,Tomorrowland Speedway,Magic Kingdom,9,27.777778,40,15,0
+3cba0cb4-e2a6-402c-93ee-c11ffcb127ef,Under the Sea - Journey of The Little Mermaid,Magic Kingdom,9,27.777778,35,20,0
+3b290419-8ca2-44bc-a710-a6c83fca76ec,Star Tours – The Adventures Continue,Hollywood Studios,9,26.666667,45,5,0
+d9d12438-d999-4482-894b-8955fdb20ccf,Astro Orbiter,Magic Kingdom,9,26.111111,35,15,0
+fb076275-0570-4d62-b2a9-4d6515130fa3,The Seas with Nemo & Friends,EPCOT,9,25.555556,45,5,0
+0aae716c-af13-4439-b638-d75fb1649df3,Mad Tea Party,Magic Kingdom,9,25.555556,30,15,0
+75449e85-c410-4cef-a368-9d2ea5d52b58,Journey Into Imagination With Figment,EPCOT,9,23.333333,35,5,0
+e76c93df-31af-49a5-8e2f-752c76c937c9,Enchanted Tales with Belle,Magic Kingdom,9,22.222222,30,15,0
+e39b831b-7731-49bb-815b-289b4f49a9fd,"Walt Disney World Railroad - Main Street, U.S.A.",Magic Kingdom,9,20.0,20,20,0
+e40ac396-cbac-43f4-8752-764ed60ccceb,Walt Disney World Railroad - Fantasyland,Magic Kingdom,9,20.0,20,20,0
+8f353879-d6ac-4211-9352-4029efb47c18,Living with the Land,EPCOT,9,19.444444,30,5,0
+57acb522-a6fc-4aa4-a80e-21f21f317250,Turtle Talk With Crush,EPCOT,9,17.222222,25,15,0
+273ddb8d-e7b5-4e34-8657-1113f49262a5,Prince Charming Regal Carrousel,Magic Kingdom,9,16.666667,25,10,0
+5b6475ad-4e9a-4793-b841-501aa382c9c0,Mission: SPACE,EPCOT,9,16.111111,20,15,0
+2ebfb38c-5cb5-4de1-86c0-f7af14188022,The Hall of Presidents,Magic Kingdom,6,15.0,15,15,0
+e8f0b426-7645-4ea3-8b41-b94ae7091a41,Monsters Inc. Laugh Floor,Magic Kingdom,9,15.0,25,10,0
+ee070d46-6a64-41c0-9f12-69dcfcca10a0,Reflections of China,EPCOT,8,15.0,15,15,0
+61fb49f8-e62f-4e1c-ae0e-8ab9929037bc,Canada Far and Wide in Circle-Vision 360,EPCOT,6,14.166667,15,10,0
+7c5e1e02-3a44-4151-9005-44066d5ba1da,Mickey's PhilharMagic,Magic Kingdom,9,10.555556,15,10,0
+ffcfeaa2-1416-4920-a1ed-543c1a1695c4,Tomorrowland Transit Authority PeopleMover,Magic Kingdom,9,10.555556,15,5,0
+9211adc9-b296-4667-8e97-b40cf76108e4,Vacation Fun - An Original Animated Short with Mickey & Minnie,Hollywood Studios,9,10.0,10,10,0
+0f57cecf-5502-4503-8bc3-ba84d3708ace,Country Bear Musical Jamboree,Magic Kingdom,9,10.0,10,10,0
+22f48b73-01df-460e-8969-9eb2b4ae836c,Gran Fiesta Tour Starring The Three Caballeros,EPCOT,9,9.444444,15,5,0
+6fd1e225-53a0-4a80-a577-4bbc9a471075,Walt Disney's Enchanted Tiki Room,Magic Kingdom,9,9.444444,25,0,0
+1a8ea967-229a-42a0-8290-59b036c84e14,Maharajah Jungle Trek,Animal Kingdom,8,5.0,5,5,0
+8183f3f2-1b59-4b9c-b634-6a863bdf8d84,Walt Disney's Carousel of Progress,Magic Kingdom,9,5.0,5,5,0
+e7976e25-4322-4587-8ded-fb1d9dcbb83c,Gorilla Falls Exploration Trail,Animal Kingdom,8,5.0,5,5,0
+30fe3c64-af71-4c66-a54b-aa61fd7af177,Swiss Family Treehouse,Magic Kingdom,9,2.222222,5,0,0

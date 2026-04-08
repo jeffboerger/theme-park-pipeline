@@ -2,6 +2,7 @@ with base as (
     select * from {{ ref('stg_wait_times') }}
     where standby_wait is not null
     and status = 'OPERATING'
+    and collected_at >= dateadd('hour', -24, current_timestamp())
 ),
 
 aggregated as (
