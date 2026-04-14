@@ -3,3 +3,7 @@ venv/
 __pycache__/
 *.pyc
 .DS_Storeairflow/
+airflow/logs/
+airflow/airflow.db
+airflow/airflow.cfg
+airflow/simple_auth_manager_passwords.json.generated
