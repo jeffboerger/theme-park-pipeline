@@ -88,3 +88,39 @@ time_chart = time_df.pivot_table(
     values="AVG_WAIT_MINUTES"
 )
 st.line_chart(time_chart)
+
+@st.cache_data(ttl=3600)
+def load_weather_correlation():
+    conn = get_connection()
+    df = pd.read_sql("SELECT * FROM mart_weather_vs_wait_times ORDER BY wait_hour DESC", conn)
+    return df
+
+weather_df = load_weather_correlation()
+
+st.divider()
+
+# Weather section
+st.subheader("🌤️ Weather vs Wait Times")
+
+# Current conditions
+if not weather_df.empty:
+    latest = weather_df.iloc[0]
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.metric("Temperature", f"{latest['TEMPERATURE_F']:.0f}°F")
+    with col2:
+        st.metric("Humidity", f"{latest['HUMIDITY_PCT']}%")
+    with col3:
+        st.metric("Conditions", latest['WEATHER_CONDITION'])
+    with col4:
+        st.metric("Precipitation", f"{latest['PRECIPITATION_MM']:.1f}mm")
+
+st.divider()
+
+# Correlation chart
+st.subheader("Temperature vs Average Wait Time Over Time")
+if not weather_df.empty:
+    chart_df = weather_df[["WAIT_HOUR", "TEMPERATURE_F", "AVG_WAIT_MINUTES", "PARK_NAME"]].dropna()
+    magic_kingdom = chart_df[chart_df["PARK_NAME"] == "Magic Kingdom"]
+    if not magic_kingdom.empty:
+        st.line_chart(magic_kingdom.set_index("WAIT_HOUR")[["TEMPERATURE_F", "AVG_WAIT_MINUTES"]])
