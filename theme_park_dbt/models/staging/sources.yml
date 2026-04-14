@@ -7,3 +7,4 @@ sources:
     tables:
       - name: raw_wait_times
       - name: raw_forecast
+      - name: raw_weather
