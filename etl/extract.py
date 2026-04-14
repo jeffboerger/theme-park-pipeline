@@ -67,3 +67,30 @@ def fetch_wait_times():
                 ))
 
     return wait_rows, forecast_rows
+
+def fetch_weather():
+    """
+    Fetches current weather conditions for Orlando, FL from Open-Meteo API.
+    No API key required. Returns a single row tuple ready for Snowflake insertion.
+    """
+    from datetime import datetime, timezone
+
+    url = (
+        "https://api.open-meteo.com/v1/forecast"
+        "?latitude=28.5383&longitude=-81.3792"
+        "&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m"
+        "&temperature_unit=fahrenheit"
+    )
+
+    response = requests.get(url)
+    data = response.json()
+    current = data["current"]
+
+    return (
+        datetime.now(timezone.utc),
+        current["temperature_2m"],
+        current["relative_humidity_2m"],
+        current["precipitation"],
+        current["weather_code"],
+        current["wind_speed_10m"],
+    )

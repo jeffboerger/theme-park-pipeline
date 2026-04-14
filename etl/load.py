@@ -51,3 +51,24 @@ def load_wait_times(wait_rows, forecast_rows):
 
     cursor.close()
     conn.close()
+
+def load_weather(weather_row):
+    """
+    Inserts a single weather snapshot row into Snowflake raw_weather table.
+
+    Args:
+        weather_row (tuple): Single tuple from fetch_weather()
+    """
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT INTO raw_weather
+        (collected_at, temperature_f, humidity_pct, precipitation_mm, weather_code, wind_speed_kmh)
+        VALUES (%s, %s, %s, %s, %s, %s)
+    """, weather_row)
+
+    conn.commit()
+    print("Weather snapshot inserted.")
+    cursor.close()
+    conn.close()

@@ -1,0 +1,16 @@
+{"timestamp":"2026-04-14T18:03:11.507337Z","level":"info","event":"Stats instance was created in PID 13993 but accessed in PID 14008. Re-initializing.","logger":"airflow.stats","filename":"stats.py","lineno":57}
+{"timestamp":"2026-04-14T18:03:12.540146Z","level":"info","event":"DAG bundles loaded: dags-folder, example_dags","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager","filename":"manager.py","lineno":179}
+{"timestamp":"2026-04-14T18:03:12.540966Z","level":"info","event":"Filling up the DagBag from /Users/jeffboerger/Dev/theme-park-pipeline/airflow/dags/theme_park_dag.py","logger":"airflow.models.dagbag.BundleDagBag","filename":"dagbag.py","lineno":593}
+{"timestamp":"2026-04-14T18:03:12.552042Z","level":"info","event":"DAG_DIR: /Users/jeffboerger/Dev/theme-park-pipeline/airflow/dags","logger":"task.stdout"}
+{"timestamp":"2026-04-14T18:03:12.552169Z","level":"info","event":"PROJECT_HOME: /Users/jeffboerger/Dev/theme-park-pipeline","logger":"task.stdout"}
+{"timestamp":"2026-04-14T18:03:13.198585Z","level":"info","event":"Task instance is in running state","logger":"task.stdout"}
+{"timestamp":"2026-04-14T18:03:13.198698Z","level":"info","event":" Previous state of the Task instance: TaskInstanceState.QUEUED","logger":"task.stdout"}
+{"timestamp":"2026-04-14T18:03:13.199220Z","level":"info","event":"Current task name:ingest_weather","logger":"task.stdout"}
+{"timestamp":"2026-04-14T18:03:13.199299Z","level":"info","event":"Dag name:theme_park_wait_times","logger":"task.stdout"}
+{"timestamp":"2026-04-14T18:03:13.813443Z","level":"info","event":"Snowflake Connector for Python Version: 4.4.0, Python Version: 3.11.15, Platform: macOS-26.4.1-x86_64-i386-64bit","logger":"snowflake.connector.connection","filename":"connection.py","lineno":620}
+{"timestamp":"2026-04-14T18:03:13.814290Z","level":"info","event":"Connecting to GLOBAL Snowflake domain","logger":"snowflake.connector.connection","filename":"connection.py","lineno":1716}
+{"timestamp":"2026-04-14T18:03:19.857714Z","level":"info","event":"Weather snapshot inserted.","logger":"task.stdout"}
+{"timestamp":"2026-04-14T18:03:20.004499Z","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator","filename":"python.py","lineno":229}
+{"timestamp":"2026-04-14T18:03:20.037751Z","level":"info","event":"Task instance in success state","logger":"task.stdout"}
+{"timestamp":"2026-04-14T18:03:20.037891Z","level":"info","event":" Previous state of the Task instance: TaskInstanceState.RUNNING","logger":"task.stdout"}
+{"timestamp":"2026-04-14T18:03:20.038525Z","level":"info","event":"Task operator:<Task(PythonOperator): ingest_weather>","logger":"task.stdout"}

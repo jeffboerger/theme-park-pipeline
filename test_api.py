@@ -6,3 +6,10 @@ print(f"wait_rows: {len(wait_rows)}")
 print(f"forecast_rows: {len(forecast_rows)}")
 load_wait_times(wait_rows, forecast_rows)
 
+
+from etl.extract import fetch_weather
+from etl.load import load_weather
+
+weather_row = fetch_weather()
+print(weather_row)
+load_weather(weather_row)
