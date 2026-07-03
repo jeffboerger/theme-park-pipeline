@@ -16,10 +16,10 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: pip
@@ -33,11 +33,15 @@ jobs:
       - name: Run extract + load
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/gcp-key.json
-        run: python run_pipeline.py   # small script calling fetch_wait_times/fetch_weather + loads
+          GCP_PROJECT: ${{ vars.GCP_PROJECT }}
+          BQ_RAW_DATASET: raw
+          BQ_ANALYTICS_DATASET: analytics
+        run: python run_pipeline.py
 
       - name: Run dbt models
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/gcp-key.json
+          GCP_PROJECT: ${{ vars.GCP_PROJECT }}
         working-directory: theme_park_dbt
         run: |
           dbt deps
