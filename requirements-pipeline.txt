@@ -1,0 +1,6 @@
+# Minimal deps for the hourly GitHub Actions pipeline run.
+# Full requirements.txt (Airflow, Streamlit, etc.) is NOT needed in CI.
+requests
+python-dotenv
+google-cloud-bigquery
+dbt-bigquery

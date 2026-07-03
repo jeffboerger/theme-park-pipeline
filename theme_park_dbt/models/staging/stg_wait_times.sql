@@ -1,3 +1,8 @@
+-- theme_park_dbt/models/staging/stg_wait_times.sql
+-- BigQuery port. No Snowflake-specific functions in this model;
+-- only kept as-is with source() unchanged. Category logic preserved
+-- (wait_category = 'VERY_LONG' is consumed by mart_wait_times_by_ride).
+
 with source as (
     select * from {{ source('raw', 'raw_wait_times') }}
 ),

@@ -1,3 +1,9 @@
+-- theme_park_dbt/models/staging/stg_forecast.sql
+-- BigQuery port. Snowflake functions changed:
+--   date_trunc('hour', x) -> timestamp_trunc(x, hour)
+--   dayname(x)            -> format_timestamp('%A', x)
+--   hour(x)               -> extract(hour from x)
+
 with source as (
     select * from {{ source('raw', 'raw_forecast') }}
 ),
@@ -20,9 +26,9 @@ renamed as (
             when '1c84a229-8862-4648-9c71-378ddd2c7693' then 'Animal Kingdom'
         end as park_name,
 
-        date_trunc('hour', forecasted_time) as forecast_hour,
-        dayname(forecasted_time) as day_of_week,
-        hour(forecasted_time) as hour_of_day
+        timestamp_trunc(forecasted_time, hour)   as forecast_hour,
+        format_timestamp('%A', forecasted_time)  as day_of_week,
+        extract(hour from forecasted_time)       as hour_of_day
 
     from source
 )

@@ -1,0 +1,19 @@
+# theme_park_dbt/profiles.yml
+# Safe to commit — auth comes from the service-account key file referenced by
+# GOOGLE_APPLICATION_CREDENTIALS, not from anything in this file.
+#
+# Set GCP_PROJECT in your environment (locally via .env, in CI via secret).
+
+theme_park_dbt:
+  target: prod
+  outputs:
+    prod:
+      type: bigquery
+      method: oauth        # uses GOOGLE_APPLICATION_CREDENTIALS automatically
+      project: "{{ env_var('GCP_PROJECT') }}"
+      dataset: analytics   # dbt writes staging + marts here
+      location: US
+      threads: 4
+      priority: interactive
+      job_execution_timeout_seconds: 300
+      job_retries: 1

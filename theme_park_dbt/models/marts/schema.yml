@@ -1,0 +1,32 @@
+# theme_park_dbt/models/marts/schema.yml
+# Data quality tests (checks off two README "future improvements" items).
+version: 2
+
+models:
+  - name: mart_wait_times_by_park
+    columns:
+      - name: park_name
+        tests: [not_null]
+      - name: avg_wait_minutes
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: true
+
+  - name: mart_wait_times_by_ride
+    columns:
+      - name: ride_id
+        tests: [not_null]        # catches null ride IDs
+      - name: ride_name
+        tests: [not_null]
+      - name: avg_wait_minutes
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0        # catches negative wait times
+              inclusive: true
+
+  - name: mart_weather_vs_wait_times
+    columns:
+      - name: wait_hour
+        tests: [not_null]

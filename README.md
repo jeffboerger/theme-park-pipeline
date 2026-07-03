@@ -1,6 +1,6 @@
 # 🎢 Theme Park Analytics Pipeline
 
-A real-time data engineering pipeline that ingests hourly ride wait times from Walt Disney World into Snowflake, orchestrated with Apache Airflow and transformed with dbt.
+A data engineering pipeline that ingests hourly ride wait times from Walt Disney World into BigQuery, orchestrated with GitHub Actions and transformed with dbt.
 
 **Live Dashboard:** https://theme-park-pipeline-hjrcuhrabfjsumpqd4kdyr.streamlit.app/
 
@@ -10,64 +10,103 @@ A real-time data engineering pipeline that ingests hourly ride wait times from W
 
 Built to demonstrate a production-grade modern data stack using real, live data from Walt Disney World — the kind of pipeline that theme park operations teams actually run. Designed as a portfolio project targeting Data Engineer roles in the Orlando market.
 
+The entire stack runs on free tiers: BigQuery (10 GB storage / 1 TB queries per month), GitHub Actions (scheduled hourly runs), and Streamlit Community Cloud. No always-on server, no local machine dependency, no monthly cost.
+
 ---
 
 ## Stack
 
 - **Python 3.11** — core language
 - **ThemeParks.wiki API** — free, real-time ride wait time data for Disney and Universal
-- **Apache Airflow** — orchestrates hourly data pulls on a cron schedule (`0 * * * *`)
-- **Snowflake** — cloud data warehouse storing raw and transformed data
+- **Open-Meteo API** — free hourly weather data for the Orlando area
+- **GitHub Actions** — orchestrates hourly data pulls on a cron schedule (`0 * * * *`), replacing local Airflow so the pipeline runs whether or not any machine is on
+- **BigQuery** — cloud data warehouse storing raw and transformed data on the free tier
 - **dbt** — transforms raw data into analytics-ready models with data quality tests
-- **Streamlit** — live dashboard visualizing wait times and trends
+- **Streamlit** — live dashboard visualizing wait times, trends, and weather correlation
+
+> **Note on orchestration:** The pipeline was originally built and prototyped with Apache Airflow locally (the DAG remains in `dags/` for reference). For zero-cost always-on hosting, production scheduling was moved to GitHub Actions — a deliberate cost-engineering tradeoff. Batch loads run hourly via `load_table_from_json`, which uses BigQuery load jobs (free) rather than the streaming insert API (billed).
 
 ---
 
 ## What It Does
 
-Every hour, Airflow triggers the pipeline which pulls live wait time data across all four Walt Disney World theme parks — Magic Kingdom, EPCOT, Hollywood Studios, and Animal Kingdom. For each attraction it captures the current standby wait, Lightning Lane status, and hourly forecasted wait times for the day. All data lands in Snowflake with a `collected_at` timestamp, building a time series that enables trend analysis across hours, days, and attractions.
+Every hour, a scheduled GitHub Actions workflow triggers the pipeline, which pulls live wait time data across all four Walt Disney World theme parks — Magic Kingdom, EPCOT, Hollywood Studios, and Animal Kingdom. For each attraction it captures the current standby wait, Lightning Lane status, and hourly forecasted wait times for the day, alongside a matching Orlando weather snapshot. All data lands in BigQuery with a `collected_at` timestamp, building a time series that enables trend and weather-correlation analysis across hours, days, and attractions.
+
+---
+
+## Architecture
+
+```
+ThemeParks.wiki API ─┐
+                     ├─> run_pipeline.py ─> BigQuery (raw dataset) ─> dbt ─> BigQuery (analytics dataset) ─> Streamlit
+Open-Meteo API ──────┘        ▲
+                              │
+                    GitHub Actions (hourly cron)
+```
 
 ---
 
 ## Project Structure
 
+```
 theme-park-pipeline/
+├── .github/
+│   └── workflows/
+│       └── pipeline.yml         # GitHub Actions — hourly ingestion + dbt run
 ├── dags/
-│   └── theme_park_dag.py        # Airflow DAG — hourly ingestion schedule
+│   └── theme_park_dag.py        # Original Airflow DAG (reference only)
 ├── etl/
-│   ├── extract.py               # API calls to ThemeParks.wiki
-│   └── load.py                  # Snowflake connection and inserts
+│   ├── extract.py               # API calls to ThemeParks.wiki + Open-Meteo
+│   └── load.py                  # BigQuery load jobs
 ├── theme_park_dbt/
+│   ├── packages.yml             # dbt package dependencies (dbt_utils)
+│   ├── profiles.yml             # BigQuery connection profile
 │   └── models/
 │       ├── staging/
-│       │   ├── stg_wait_times.sql   # Cleans raw wait time data
-│       │   ├── stg_forecast.sql     # Cleans raw forecast data
-│       │   └── sources.yml          # dbt source definitions
+│       │   ├── stg_wait_times.sql
+│       │   ├── stg_forecast.sql
+│       │   ├── stg_weather.sql
+│       │   └── sources.yml
 │       └── marts/
-│           ├── mart_wait_times_by_park.sql  # Aggregated by park and hour
-│           └── mart_wait_times_by_ride.sql  # Aggregated by ride
+│           ├── mart_wait_times_by_park.sql
+│           ├── mart_wait_times_by_ride.sql
+│           ├── mart_weather_vs_wait_times.sql
+│           └── schema.yml       # dbt data quality tests
+├── setup_bigquery.py            # Creates datasets + raw tables
+├── run_pipeline.py              # Production ingestion entrypoint
+├── export_for_bi.py             # Exports marts to CSV for Tableau/Power BI
 ├── streamlit_app.py             # Live dashboard
+├── requirements.txt             # Full local/dev dependencies
+├── requirements-pipeline.txt    # Slim deps for the hourly Action
+├── requirements-streamlit.txt   # Deps for Streamlit Cloud
 ├── .env                         # Credentials (not committed)
-└── requirements.txt
-
+└── README.md
+```
 
 ---
 
 ## Data Model
 
-**`RAW.raw_wait_times`** — one row per attraction per hourly snapshot
-- `ride_id`, `ride_name`, `park_id`, `status`, `standby_wait`, `lightning_lane_state`, `collected_at`
+**`raw.raw_wait_times`** — one row per attraction per hourly snapshot
+- `ride_id`, `ride_name`, `park_id`, `status`, `standby_wait`, `lightning_lane_state`, `lightning_lane_return_start`, `collected_at`
 
-**`RAW.raw_forecast`** — one row per forecasted hour per attraction per snapshot
+**`raw.raw_forecast`** — one row per forecasted hour per attraction per snapshot
 - `ride_id`, `ride_name`, `park_id`, `forecasted_time`, `wait_time`, `percentage`, `collected_at`
 
-**`ANALYTICS.stg_wait_times`** — cleaned wait times with `park_name` and `wait_category` derived columns
+**`raw.raw_weather`** — one row per weather snapshot
+- `collected_at`, `temperature_f`, `humidity_pct`, `precipitation_mm`, `weather_code`, `wind_speed_kmh`
 
-**`ANALYTICS.stg_forecast`** — cleaned forecasts with `forecast_hour`, `day_of_week`, `hour_of_day`
+**`analytics.stg_wait_times`** — cleaned wait times with `park_name` and `wait_category` derived columns
 
-**`ANALYTICS.mart_wait_times_by_park`** — avg/max/min wait times per park per hour
+**`analytics.stg_forecast`** — cleaned forecasts with `forecast_hour`, `day_of_week`, `hour_of_day`
 
-**`ANALYTICS.mart_wait_times_by_ride`** — avg/max/min wait times per ride across all snapshots
+**`analytics.stg_weather`** — cleaned weather with `weather_hour`, `weather_condition`, `temp_category`
+
+**`analytics.mart_wait_times_by_park`** — avg/max/min wait times per park per hour, with operating/closed ride counts
+
+**`analytics.mart_wait_times_by_ride`** — avg/max/min wait times per ride across recent snapshots
+
+**`analytics.mart_weather_vs_wait_times`** — hourly weather joined to hourly park wait times for correlation analysis
 
 ---
 
@@ -75,8 +114,8 @@ theme-park-pipeline/
 
 ### Prerequisites
 - Python 3.11
-- Snowflake account
-- Airflow 3.x
+- Google Cloud project with the BigQuery API enabled
+- A GCP service account with **BigQuery Data Editor** + **BigQuery Job User** roles, and its JSON key
 
 ### Installation
 ```bash
@@ -91,35 +130,43 @@ pip install -r requirements.txt
 
 Create a `.env` file in the project root:
 
-SNOWFLAKE_ACCOUNT=your_account
-SNOWFLAKE_USER=your_username
-SNOWFLAKE_PASSWORD=your_password
+```
+GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/service-account-key.json
+GCP_PROJECT=your-gcp-project-id
+BQ_RAW_DATASET=raw
+BQ_ANALYTICS_DATASET=analytics
+```
 
-
-### Snowflake Setup
+### BigQuery Setup
 ```bash
-python test_api.py  # Creates database, schema, warehouse, and tables
+python setup_bigquery.py   # Creates raw + analytics datasets and all raw tables
+```
+
+### First Ingestion
+```bash
+python run_pipeline.py     # Pulls live data and loads it into BigQuery
 ```
 
 ### dbt Setup
 ```bash
 cd theme_park_dbt
-dbt debug      # Verify connection
-dbt run        # Build all models
+dbt deps       # Install dbt_utils
+dbt debug      # Verify BigQuery connection
+dbt run        # Build all staging + mart models
+dbt test       # Run data quality tests
 ```
 
-### Start Airflow
-```bash
-export AIRFLOW_HOME=~/Dev/theme-park-pipeline/airflow
-airflow standalone
-```
-
-Navigate to `http://localhost:8080`, find `theme_park_wait_times`, and enable it.
+### Automated Hourly Runs (GitHub Actions)
+1. Push the repo to GitHub.
+2. In repo **Settings → Secrets and variables → Actions**, add a secret `GCP_SA_KEY` containing the full service-account JSON, and a variable `GCP_PROJECT` with your project id.
+3. The workflow in `.github/workflows/pipeline.yml` runs hourly and can also be triggered manually from the Actions tab.
 
 ### Run Dashboard Locally
 ```bash
 streamlit run streamlit_app.py
 ```
+
+For Streamlit Community Cloud, add the service-account JSON under a `[gcp_service_account]` table in the app's Secrets settings.
 
 ---
 
@@ -128,18 +175,14 @@ streamlit run streamlit_app.py
 ### Dashboard
 - Replace default Streamlit charts with Plotly for better interactivity and styling
 - Add an interactive map showing wait times by attraction location within each park
-- Add a park selector filter so users can drill into a single park
-- Add a time range slider to explore historical trends
-- Color code wait categories (green/yellow/red) on the ride table
-- Add Lightning Lane availability tracking
+- Add a park selector filter and a historical time-range slider
+- Color code wait categories on the ride table
 
 ### Pipeline
 - Add Universal Orlando Resort parks
-- Deploy Airflow to a cloud server (AWS EC2 or Astronomer) so the pipeline runs when the local machine is off
-- Migrate from Snowflake to BigQuery after trial period for long-term free hosting
-- Add dbt data quality tests for null ride IDs and negative wait times
-- Add email alerting in Airflow for pipeline failures
+- Add email/Slack alerting on GitHub Actions run failures
 - Build a forecast accuracy mart comparing predicted vs actual wait times
+- Partition raw tables by ingestion date to keep queries within the free tier as history grows
 
 ### Portfolio
 - Add a write-up blog post explaining the architecture decisions

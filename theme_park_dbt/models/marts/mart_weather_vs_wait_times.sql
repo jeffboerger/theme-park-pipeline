@@ -1,3 +1,9 @@
+-- theme_park_dbt/models/marts/mart_weather_vs_wait_times.sql
+-- BigQuery port. Only Snowflake-specific functions changed:
+--   date_trunc('hour', x) -> timestamp_trunc(x, hour)
+-- All columns and logic preserved from the original.
+-- NOTE: depends on temp_category from stg_weather.
+
 with weather as (
     select
         weather_hour,
@@ -12,15 +18,15 @@ with weather as (
 
 wait_times as (
     select
-        date_trunc('hour', collected_at)    as wait_hour,
+        timestamp_trunc(collected_at, hour) as wait_hour,
         park_name,
         avg(standby_wait)                   as avg_wait_minutes,
         max(standby_wait)                   as max_wait_minutes,
         count(distinct ride_id)             as rides_tracked
     from {{ ref('stg_wait_times') }}
     where standby_wait is not null
-    and status = 'OPERATING'
-    group by date_trunc('hour', collected_at), park_name
+      and status = 'OPERATING'
+    group by timestamp_trunc(collected_at, hour), park_name
 ),
 
 joined as (

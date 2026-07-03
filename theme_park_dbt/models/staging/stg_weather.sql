@@ -1,3 +1,9 @@
+-- theme_park_dbt/models/staging/stg_weather.sql
+-- BigQuery port. Snowflake functions changed:
+--   date_trunc('hour', x) -> timestamp_trunc(x, hour)
+-- Category logic preserved (temp_category is consumed by
+-- mart_weather_vs_wait_times).
+
 with source as (
     select * from {{ source('raw', 'raw_weather') }}
 ),
@@ -12,7 +18,7 @@ renamed as (
         wind_speed_kmh,
 
         -- derived columns
-        date_trunc('hour', collected_at)    as weather_hour,
+        timestamp_trunc(collected_at, hour) as weather_hour,
         case
             when precipitation_mm > 0       then 'RAINY'
             when weather_code >= 95         then 'STORMY'

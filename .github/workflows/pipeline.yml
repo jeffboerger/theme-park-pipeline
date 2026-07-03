@@ -1,0 +1,45 @@
+# .github/workflows/pipeline.yml
+# Replaces local Airflow scheduling. Runs the extract -> load -> dbt pipeline
+# every hour on GitHub's servers — free on a public repo.
+
+name: theme-park-pipeline
+
+on:
+  schedule:
+    - cron: "0 * * * *"   # hourly (best-effort; may drift a few minutes)
+  workflow_dispatch:        # lets you trigger manually from the Actions tab
+
+jobs:
+  ingest-and-transform:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements-pipeline.txt
+
+      - name: Write GCP service account key
+        run: echo '${{ secrets.GCP_SA_KEY }}' > "$RUNNER_TEMP/gcp-key.json"
+
+      - name: Run extract + load
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/gcp-key.json
+        run: python run_pipeline.py   # small script calling fetch_wait_times/fetch_weather + loads
+
+      - name: Run dbt models
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/gcp-key.json
+        working-directory: theme_park_dbt
+        run: |
+          dbt deps
+          dbt run --profiles-dir .
+          dbt test --profiles-dir .

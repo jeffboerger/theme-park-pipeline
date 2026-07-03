@@ -1,9 +1,11 @@
+# theme_park_dbt/models/staging/sources.yml
 version: 2
 
 sources:
   - name: raw
-    database: THEME_PARK_DB
-    schema: RAW
+    # BigQuery: database = GCP project, schema = dataset
+    database: "{{ env_var('GCP_PROJECT') }}"
+    schema: raw
     tables:
       - name: raw_wait_times
       - name: raw_forecast

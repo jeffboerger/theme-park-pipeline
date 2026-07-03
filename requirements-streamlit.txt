@@ -1,0 +1,6 @@
+# Requirements for the Streamlit Cloud dashboard.
+streamlit
+pandas
+google-cloud-bigquery
+db-dtypes          # required for BigQuery -> pandas dataframe conversion
+google-auth
