@@ -1,0 +1,7 @@
+# ML layer dependencies (on top of the ETL's requirements)
+# pip install -r ml/requirements.txt
+xgboost
+scikit-learn      # required by xgboost's XGBRegressor interface
+pandas
+tabulate          # DataFrame.to_markdown()
+db-dtypes         # BigQuery results -> pandas (note: db-Dtypes, two d's)

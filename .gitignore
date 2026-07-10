@@ -23,3 +23,4 @@ airflow/simple_auth_manager_passwords.json.generated
 theme_park_dbt/target/
 theme_park_dbt/dbt_packages/
 theme_park_dbt/logs/theme_park_dbt/package-lock.yml
+__pycache__/
