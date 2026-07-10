@@ -4,11 +4,11 @@
 
 name: theme-park-pipeline
 
-on:
+n:
   schedule:
-    - cron: "0 * * * *"   # hourly (best-effort; may drift a few minutes)
-  workflow_dispatch:        # lets you trigger manually from the Actions tab
-
+    - cron: "23 * * * *"   # off-peak minute — far fewer skipped runs
+    - cron: "53 * * * *"   # second attempt each hour; snapshots dedupe
+                           # naturally via collected_at
 jobs:
   ingest-and-transform:
     runs-on: ubuntu-latest
