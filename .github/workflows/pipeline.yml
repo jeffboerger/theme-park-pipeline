@@ -5,6 +5,7 @@
 name: theme-park-pipeline
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "23 * * * *"   # off-peak minute — far fewer skipped runs
     - cron: "53 * * * *"   # second attempt each hour; snapshots dedupe
