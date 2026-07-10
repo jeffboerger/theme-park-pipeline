@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: fct_wait_features
+    description: >
+      ML feature mart for next-hour wait prediction. One row per (ride, hour)
+      on a dense hourly spine. All features at hour T use only data <= T;
+      target_next_hour is the sole forward-looking column. Time features are
+      park-local (America/New_York).
+    columns:
+      - name: ride_id
+        tests: [not_null]
+      - name: feature_hour
+        tests: [not_null]
+      - name: avg_wait
+        description: Mean OPERATING standby wait during feature_hour (the persistence baseline).
+        tests: [not_null]
+      - name: target_next_hour
+        description: Mean OPERATING standby wait during feature_hour + 1h. THE LABEL.
+        tests: [not_null]
+      - name: hour_of_day
+        tests:
+          - accepted_values:
+              values: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+              quote: false
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ride_id, feature_hour]
