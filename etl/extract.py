@@ -87,6 +87,9 @@ def fetch_weather():
 
     response = requests.get(url)
     data = response.json()
+    if "current" not in data:
+        # Open-Meteo returns {"error": true, "reason": ...} on rate limits etc.
+        raise RuntimeError(f"Open-Meteo response missing 'current': {data}")
     current = data["current"]
 
     return (

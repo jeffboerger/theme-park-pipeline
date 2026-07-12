@@ -14,9 +14,14 @@ def main():
     print(f"Fetched {len(wait_rows)} wait rows, {len(forecast_rows)} forecast rows")
     load_wait_times(wait_rows, forecast_rows)
 
-    weather_row = fetch_weather()
-    print(f"Fetched weather: {weather_row}")
-    load_weather(weather_row)
+    # Weather is enrichment, not the product — its failure must never
+    # kill a run that already loaded wait times.
+    try:
+        weather_row = fetch_weather()
+        print(f"Fetched weather: {weather_row}")
+        load_weather(weather_row)
+    except Exception as e:
+        print(f"  ! weather skipped this run: {e}")
 
     print("Pipeline run complete.")
 
