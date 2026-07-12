@@ -151,6 +151,9 @@ PARK_NAMES = {
     "47f90d2c-e191-4239-a466-5892ef59a88b": "EPCOT",
     "288747d1-8b4f-4a64-867e-ea7c9b27bad8": "Hollywood Studios",
     "1c84a229-8862-4648-9c71-378ddd2c7693": "Animal Kingdom",
+    "eb3f4560-2383-4a36-9152-6b3e5ed6bc57": "Universal Studios Florida",
+    "267615cc-8943-4c2a-ae2c-5da728ca591f": "Islands of Adventure",
+    "12dbb85b-265f-44e6-bccf-f1faa17211fc": "Epic Universe",
 }
 
 

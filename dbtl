@@ -1,0 +1,5 @@
+#!/bin/bash
+# dbt with .env loaded — dbt doesn't read .env files, so this exports the
+# vars and runs dbt from the project dir. Usage: ./dbtl build --select whatever
+set -a; source "$(dirname "$0")/.env"; set +a
+cd "$(dirname "$0")/theme_park_dbt" && dbt "$@"
